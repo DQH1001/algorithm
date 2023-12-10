@@ -19,6 +19,10 @@ public class ProductThread {
                             throw new RuntimeException(e);
                         }
                     } else {
+                        /**
+                         * 这里需要放在else中或者再次判断if (count >= 10)，因为wait会释放锁，线程会在wait处等待，
+                         * 如果不这样，等执行到这里的时候count可能被别的线程操作后，已经大于等于10了
+                         */
                         ++count;
                         System.out.println(Thread.currentThread().getName() + "生产一次后：" + count);
                         lock.notifyAll();
@@ -45,6 +49,10 @@ public class ProductThread {
                             throw new RuntimeException(e);
                         }
                     } else {
+                        /**
+                         * 这里需要放在else中或者再次判断if (count > 0)，因为wait会释放锁，线程会在wait处等待，
+                         * 如果不这样，等执行到这里的时候count可能被别的线程操作后，还是小于等于0
+                         */
                         --count;
                         System.out.println(Thread.currentThread().getName() + "消费一次后：" + count);
                         lock.notifyAll();
